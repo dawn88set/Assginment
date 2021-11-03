@@ -1,0 +1,46 @@
+<div class="page-container">
+  <div class="add-post-container">
+    <form action="" (ngSubmit)="postFeed()">
+      <div class="row feed-content">
+        <div class="avatar-container">
+          <img src="./assets/avatar.jpg" alt="">
+        </div>
+        <div class="input-container">
+          <label for="thoughts">Share your thoughts</label>
+          <textarea [(ngModel)]="postContent" [ngModelOptions]="{standalone:true}" name="" id="thoughts" ></textarea>
+        </div>
+      </div>
+      <div class="row actions">
+        <button mat-button class="cancel"  *ngIf="postContent !== ''" (click)="postContent = ''">Cancel</button>
+        <button mat-raised-button class="save" color="primary"[disabled]="postContent === ''"  type="submit">Post</button>
+      </div>
+    </form>
+  </div>
+  <div class="feed-container" *ngIf="feeds">
+    <div class="card" *ngFor="let feed of feeds">
+      <span class="material-icons" (click)="likePost(feed)">{{feed.liked? 'favorite' : 'favorite_border'}}</span>
+
+      <div class="post-meta">
+        <div class="avatar-container">
+          <img src="./assets/avatar.jpg" alt="">
+        </div>
+        <div class="user-meta">
+          <strong class="name">Seemo Cohen</strong>
+          <div class="position">Cyberproof Analyst</div>
+          <div class="posted-on">{{feed.timestamp }}</div>
+        </div>
+      </div>
+      <div class="post-content">
+        {{feed.content}}
+      </div>
+      <div class="row likes">
+        <span *ngIf="feed.likeCount === 0" class="no-likes">No Likes</span>
+        <span *ngIf="feed.likeCount > 0">Likes {{feed.likeCount}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="load-more">
+    <a (click)="load()">Load more</a>
+  </div>
+</div>

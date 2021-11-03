@@ -1,0 +1,117 @@
+@import "../../../shared/styles/mixins/card";
+@import "../../../shared/styles/constants/colors";
+@import "../../../shared/styles/mixins/general";
+
+:host {
+  flex: auto;
+  background: $background;
+  padding-top: 30px;
+  overflow-y: auto;
+  max-height: calc(100% - 90px);
+
+  .page-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    width: auto;
+    flex: auto;
+    margin: auto;
+
+    .add-post-container {
+      @include card();
+      margin-bottom: 20px;
+
+      .row {
+        @include row();
+
+        &.feed-content {
+          margin-bottom: 15px;
+
+          .avatar-container {
+            @include roundImage(50);
+            margin-right: 20px;
+          }
+
+          .input-container {
+            @include input-container();
+            width: 100%;
+          }
+        }
+
+        &.actions {
+          display: flex;
+          justify-content: flex-end;
+          padding: 0 20px;
+        }
+      }
+    }
+
+    .feed-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 15px;
+
+      .card {
+        @include card();
+        margin-bottom: 15px;
+        position: relative;
+        .material-icons {
+          position: absolute;
+          right: 15px;
+          top: 15px;
+          color: #2c5be9;
+          cursor: pointer;
+        }
+
+        .post-meta {
+          @include row();
+
+          .avatar-container {
+            @include roundImage(50);
+            margin-right: 10px;
+          }
+
+          .user-meta {
+            .name {
+              font-size: 1rem;
+            }
+
+            .position {
+              font-size: 0.8rem;
+              color: #33404b;
+            }
+
+            .posted-on {
+              font-size: 0.8rem;
+              color: #bababc;
+            }
+          }
+        }
+
+        .post-content {
+          padding-left: 30px;
+          margin: 10px 0;
+        }
+
+        .likes {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-end;
+        }
+      }
+    }
+
+    .load-more {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+      a {
+        color: #2c5be9;
+        font-size: 1rem;
+      }
+    }
+  }
+}
