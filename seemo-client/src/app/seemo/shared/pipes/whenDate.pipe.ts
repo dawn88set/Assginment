@@ -1,41 +1,32 @@
 import {Pipe, PipeTransform} from "@angular/core";
-import {DatePipe} from "@angular/common";
+import * as moment from 'moment';
 
 @Pipe({
   name: 'whenDatePipe',
 })
 export class WhenDatePipe implements PipeTransform {
-  transform(value: string) {
-
-    let _value = Number(value);
-
-    let dif = Math.floor( ( (Date.now() - _value) / 1000 ) / 86400 );
-
-    if ( dif < 30 ){
-      return convertToNiceDate(value);
-    }else{
-      let datePipe = new DatePipe("en-US");
-      const parsedValue = datePipe.transform(value, 'MMM-dd-yyyy');
-      return parsedValue;
+  transform(value: number) {
+    const date = new Date(value);
+    if (this.datesAreEqual(date, new Date())) {
+      return 'today';
     }
+    let dateToCompare: Date = new Date();
+    if (this.datesAreEqual(date, new Date(dateToCompare.setDate(dateToCompare.getDate() - 1)))) {
+      return 'yesterday';
+    }
+    dateToCompare = new Date();
+    if (this.datesAreEqual(date, new Date(dateToCompare.setDate(dateToCompare.getDate() + 1)))) {
+      return 'tomorrow';
+    }
+    return moment(date).format('DD/MM');
   }
-}
 
-function convertToNiceDate(time: string) {
-  var date = new Date(time),
-    diff = (((new Date()).getTime() - date.getTime()) / 1000),
-    daydiff = Math.floor(diff / 86400);
 
-  if (isNaN(daydiff) || daydiff < 0 || daydiff >= 31)
-    return '';
-
-  return daydiff == 0 && (
-    diff < 60 && "Just now" ||
-    diff < 120 && "1 minute ago" ||
-    diff < 3600 && Math.floor(diff / 60) + " minutes ago" ||
-    diff < 7200 && "1 hour ago" ||
-    diff < 86400 && Math.floor(diff / 3600) + " hours ago") ||
-    daydiff == 1 && "Yesterday" ||
-    daydiff < 7 && daydiff + " days ago" ||
-    daydiff < 31 && Math.ceil(daydiff / 7) + " week(s) ago";
+  private datesAreEqual(date1: Date, date2: Date): boolean {
+    const newDate1 = new Date(date1);
+    const newDate2 = new Date(date2);
+    return newDate1.getDay() === newDate2.getDay() &&
+      newDate1.getMonth() === newDate2.getMonth() &&
+      newDate1.getDate() === newDate2.getDate();
+  }
 }
